@@ -1,0 +1,180 @@
+{
+  "models": {
+    "sim-careful": {
+      "n": 520,
+      "answer_acc": 0.9230769230769231,
+      "answer_ci": [
+        0.9,
+        0.9442307692307692
+      ],
+      "process_acc": 0.9057692307692308,
+      "process_ci": [
+        0.8807692307692307,
+        0.9288461538461539
+      ],
+      "lucky_guess_rate": 0.01730769230769231,
+      "by_domain": {
+        "algebra": {
+          "n": 200,
+          "answer_acc": 0.96,
+          "ci": [
+            0.93,
+            0.985
+          ]
+        },
+        "calculus": {
+          "n": 160,
+          "answer_acc": 0.88125,
+          "ci": [
+            0.83125,
+            0.925
+          ]
+        },
+        "probability": {
+          "n": 160,
+          "answer_acc": 0.91875,
+          "ci": [
+            0.875,
+            0.95625
+          ]
+        }
+      },
+      "error_types": {
+        "arithmetic_slip": 21,
+        "invalid_algebra": 3,
+        "misapplied_rule": 8,
+        "unjustified_leap": 17,
+        "parse_error": 0
+      }
+    },
+    "sim-hasty": {
+      "n": 520,
+      "answer_acc": 0.8,
+      "answer_ci": [
+        0.7673076923076924,
+        0.8346153846153846
+      ],
+      "process_acc": 0.7730769230769231,
+      "process_ci": [
+        0.7384134615384615,
+        0.8096153846153846
+      ],
+      "lucky_guess_rate": 0.026923076923076925,
+      "by_domain": {
+        "algebra": {
+          "n": 200,
+          "answer_acc": 0.825,
+          "ci": [
+            0.775,
+            0.875
+          ]
+        },
+        "calculus": {
+          "n": 160,
+          "answer_acc": 0.8,
+          "ci": [
+            0.7375,
+            0.8625
+          ]
+        },
+        "probability": {
+          "n": 160,
+          "answer_acc": 0.76875,
+          "ci": [
+            0.7,
+            0.83125
+          ]
+        }
+      },
+      "error_types": {
+        "arithmetic_slip": 55,
+        "invalid_algebra": 9,
+        "misapplied_rule": 9,
+        "unjustified_leap": 45,
+        "parse_error": 0
+      }
+    },
+    "sim-rule-confused": {
+      "n": 520,
+      "answer_acc": 0.8903846153846153,
+      "answer_ci": [
+        0.8634615384615385,
+        0.9173076923076923
+      ],
+      "process_acc": 0.801923076923077,
+      "process_ci": [
+        0.7673076923076924,
+        0.8365384615384616
+      ],
+      "lucky_guess_rate": 0.08846153846153847,
+      "by_domain": {
+        "algebra": {
+          "n": 200,
+          "answer_acc": 0.925,
+          "ci": [
+            0.885,
+            0.96
+          ]
+        },
+        "calculus": {
+          "n": 160,
+          "answer_acc": 0.8,
+          "ci": [
+            0.7375,
+            0.85625
+          ]
+        },
+        "probability": {
+          "n": 160,
+          "answer_acc": 0.9375,
+          "ci": [
+            0.89375,
+            0.96875
+          ]
+        }
+      },
+      "error_types": {
+        "arithmetic_slip": 28,
+        "invalid_algebra": 8,
+        "misapplied_rule": 51,
+        "unjustified_leap": 16,
+        "parse_error": 0
+      }
+    }
+  },
+  "comparisons": [
+    {
+      "a": "sim-careful",
+      "b": "sim-hasty",
+      "metric": "answer_acc",
+      "n": 520,
+      "diff": 0.12307692307692308,
+      "ci_low": 0.08461538461538462,
+      "ci_high": 0.16158653846153778,
+      "p_value": 0.0,
+      "significant": true
+    },
+    {
+      "a": "sim-careful",
+      "b": "sim-rule-confused",
+      "metric": "answer_acc",
+      "n": 520,
+      "diff": 0.032692307692307694,
+      "ci_low": -0.0019230769230769232,
+      "ci_high": 0.06923076923076923,
+      "p_value": 0.0664,
+      "significant": false
+    },
+    {
+      "a": "sim-hasty",
+      "b": "sim-rule-confused",
+      "metric": "answer_acc",
+      "n": 520,
+      "diff": -0.09038461538461538,
+      "ci_low": -0.1326923076923077,
+      "ci_high": -0.046153846153846156,
+      "p_value": 0.0,
+      "significant": true
+    }
+  ]
+}

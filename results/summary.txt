@@ -1,0 +1,15 @@
+Model                 answer acc [95% CI]        process acc [95% CI]       lucky-guess
+--------------------------------------------------------------------------------------------
+sim-careful           0.923 [0.900, 0.944]     0.906 [0.881, 0.929]     0.017
+sim-hasty             0.800 [0.767, 0.835]     0.773 [0.738, 0.810]     0.027
+sim-rule-confused     0.890 [0.863, 0.917]     0.802 [0.767, 0.837]     0.088
+
+First-error type counts:
+  sim-careful          arithmetic_slip=21  invalid_algebra=3  misapplied_rule=8  unjustified_leap=17  parse_error=0
+  sim-hasty            arithmetic_slip=55  invalid_algebra=9  misapplied_rule=9  unjustified_leap=45  parse_error=0
+  sim-rule-confused    arithmetic_slip=28  invalid_algebra=8  misapplied_rule=51  unjustified_leap=16  parse_error=0
+
+Paired bootstrap on answer accuracy (A - B):
+  sim-careful vs sim-hasty: +0.123 [+0.085, +0.162]  p=0.0000  (significant)
+  sim-careful vs sim-rule-confused: +0.033 [-0.002, +0.069]  p=0.0664  (not significant)
+  sim-hasty vs sim-rule-confused: -0.090 [-0.133, -0.046]  p=0.0000  (significant)
