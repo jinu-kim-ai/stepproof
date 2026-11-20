@@ -1,0 +1,11 @@
+Model                 answer acc [95% CI]        process acc [95% CI]       flawed  unreadable  lucky-guess
+------------------------------------------------------------------------------------------------------------
+claude-haiku-5-5      0.992 [0.977, 1.000]     0.992 [0.977, 1.000]     0.008   0.000       0.000
+claude-opus-5-5       1.000 [1.000, 1.000]     0.992 [0.977, 1.000]     0.000   0.008       0.000
+
+First-error type counts:
+  claude-haiku-5-5     arithmetic_slip=1  invalid_algebra=0  misapplied_rule=0  unjustified_leap=0  parse_error=0
+  claude-opus-5-5      arithmetic_slip=0  invalid_algebra=0  misapplied_rule=0  unjustified_leap=0  parse_error=1
+
+Paired bootstrap on answer accuracy (A - B):
+  claude-haiku-5-5 vs claude-opus-5-5: -0.008 [-0.023, +0.000]  p=0.7228  (not significant)

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import random
+import threading
 from dataclasses import dataclass, field
 
 import sympy as sp
@@ -188,9 +189,11 @@ class ClaudeModel:
     def __init__(self, model: str = "claude-opus-5-5", effort: str = "medium"):
         import anthropic
 
-        self.client = anthropic.Anthropic()
+        self.client = anthropic.Anthropic(max_retries=8)   # ride out rate limits on low-tier accounts
         self.name = model
         self.effort = effort
+        self.usage = {"requests": 0, "input_tokens": 0, "output_tokens": 0}
+        self._lock = threading.Lock()
 
     def solve(self, problem: Problem) -> Solution:
         response = self.client.messages.create(
@@ -200,6 +203,10 @@ class ClaudeModel:
             output_config={"effort": self.effort, "format": {"type": "json_schema", "schema": SOLUTION_SCHEMA}},
             messages=[{"role": "user", "content": problem.statement}],
         )
+        with self._lock:
+            self.usage["requests"] += 1
+            self.usage["input_tokens"] += response.usage.input_tokens
+            self.usage["output_tokens"] += response.usage.output_tokens   # includes thinking tokens
         if response.stop_reason == "refusal":
             return Solution([], "", raw="[refusal]")
         text = "".join(b.text for b in response.content if b.type == "text")

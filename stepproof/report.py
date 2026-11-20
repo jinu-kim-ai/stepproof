@@ -31,6 +31,9 @@ def summarize(rows: list[dict]) -> dict:
             "n": len(rs),
             "answer_acc": a, "answer_ci": [alo, ahi],
             "process_acc": p, "process_ci": [plo, phi],
+            # flawed = a step is wrong; unreadable = a step could not be parsed (not counted as wrong)
+            "flawed_rate": sum(r["first_error_type"] not in (None, "parse_error", "api_error") for r in rs) / len(rs),
+            "unreadable_rate": sum(r["first_error_type"] == "parse_error" for r in rs) / len(rs),
             "lucky_guess_rate": sum(r["lucky_guess"] for r in rs) / len(rs),
             "by_domain": domains,
             "error_types": {e: errors.get(e, 0) for e in ERROR_TYPES + (["api_error"] if errors.get("api_error") else [])},
@@ -47,12 +50,12 @@ def summarize(rows: list[dict]) -> dict:
 
 
 def format_summary(summary: dict) -> str:
-    lines = ["Model                 answer acc [95% CI]        process acc [95% CI]       lucky-guess",
-             "-" * 92]
+    lines = ["Model                 answer acc [95% CI]        process acc [95% CI]       flawed  unreadable  lucky-guess",
+             "-" * 108]
     for name, m in summary["models"].items():
         lines.append(f"{name:<20}  {m['answer_acc']:.3f} [{m['answer_ci'][0]:.3f}, {m['answer_ci'][1]:.3f}]"
                      f"     {m['process_acc']:.3f} [{m['process_ci'][0]:.3f}, {m['process_ci'][1]:.3f}]"
-                     f"     {m['lucky_guess_rate']:.3f}")
+                     f"     {m['flawed_rate']:.3f}   {m['unreadable_rate']:.3f}       {m['lucky_guess_rate']:.3f}")
     lines += ["", "First-error type counts:"]
     for name, m in summary["models"].items():
         lines.append(f"  {name:<20} " + "  ".join(f"{k}={v}" for k, v in m["error_types"].items()))

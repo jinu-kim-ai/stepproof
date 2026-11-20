@@ -57,6 +57,88 @@ def test_solve_lost_root_is_invalid_algebra():
     assert not v.final_correct
 
 
+def test_case_split_is_accepted_when_all_roots_are_reported():
+    p = solve_problem("x**2 - 4*x - 12 = 0", "-2, 6")
+    v = verify(p, ["(x - 6)*(x + 2) = 0", "x - 6 = 0", "x = 6"], "6, -2")
+    assert v.process_correct and v.final_correct
+
+
+def test_case_split_that_drops_a_root_is_invalid_algebra():
+    p = solve_problem("x**2 - 4*x - 12 = 0", "-2, 6")
+    v = verify(p, ["(x - 6)*(x + 2) = 0", "x - 6 = 0", "x = 6"], "6")
+    assert not v.final_correct
+    assert v.first_error_step == 1
+    assert v.first_error_type == "invalid_algebra"
+
+
+def test_step_listing_both_roots():
+    p = solve_problem("x**2 - 4*x - 12 = 0", "-2, 6")
+    for step in ("x = 6 or x = -2", "x = 6, x = -2", "x = 6, -2"):
+        v = verify(p, ["(x - 6)*(x + 2) = 0", step], "6, -2")
+        assert v.process_correct, step
+
+
+# ---- notation real models use (each case below was first seen in Claude output) ----
+def test_limit_worked_on_the_function_then_evaluated():
+    p = evaluate_problem("Limit((x**2 - 64)/(x + 8), x, -8)", "-16")
+    v = verify(p, ["(x**2 - 64)/(x + 8)", "((x - 8)*(x + 8))/(x + 8)", "x - 8", "-8 - 8", "-16"], "-16")
+    assert v.process_correct and v.final_correct
+
+
+def test_limit_restated_around_each_simplification():
+    p = evaluate_problem("Limit((x**2 - 9)/(x + 3), x, -3)", "-6")
+    v = verify(p, ["Limit((x**2 - 9)/(x + 3), x, -3)", "Limit(x - 3, x, -3)", "-3 - 3", "-6"], "-6")
+    assert v.process_correct
+
+
+def test_derivative_function_then_substitution_with_labels():
+    p = evaluate_problem("Subs(Derivative(4*x**3 + 6*x**2 - 5*x, x), x, 1)", "19")
+    steps = ["f(x) = 4*x**3 + 6*x**2 - 5*x", "f'(x) = 12*x**2 + 12*x - 5", "f'(1) = 12*1**2 + 12*1 - 5", "f'(1) = 19"]
+    assert verify(p, steps, "19").process_correct
+
+
+def test_wrong_derivative_function_is_caught_and_carried():
+    p = evaluate_problem("Subs(Derivative(4*x**3 + 6*x**2 - 5*x, x), x, 1)", "19")
+    v = verify(p, ["f'(x) = 12*x**3 + 12*x**2 - 5*x", "12*1**3 + 12*1**2 - 5*1", "19"], "19")
+    assert v.first_error_step == 0
+    assert v.first_error_type == "misapplied_rule"
+    assert v.steps[1].status == "propagated"          # correct substitution into the wrong derivative
+    assert v.lucky_guess
+
+
+def test_substituting_before_differentiating_is_caught():
+    p = evaluate_problem("Subs(Derivative(4*x**3 + 6*x**2 - 5*x, x), x, 1)", "19")
+    v = verify(p, ["4*1**3 + 6*1**2 - 5*1", "5"], "5")   # computed f(1), not f'(1)
+    assert v.first_error_step == 0 and not v.final_correct
+
+
+def test_antiderivative_step_then_bounds():
+    p = evaluate_problem("Integral(-3*x**2 + x, (x, -2, 1))", "-21/2")
+    v = verify(p, ["-x**3 + x**2/2", "(-1 + 1/2) - (8 + 2)", "-21/2"], "-21/2")
+    assert v.process_correct
+
+
+def test_prose_prefix_and_leibniz_notation():
+    p = evaluate_problem("Subs(Derivative(-x**3 - 2*x**2 - x, x), x, 1)", "-8")
+    steps = ["Differentiate: d/dx(-x**3 - 2*x**2 - x) = -3*x**2 - 4*x - 1",
+             "Substitute x = 1: -3*1**2 - 4*1 - 1", "Simplify: -3 - 4 - 1 = -8"]
+    assert verify(p, steps, "-8").process_correct
+
+
+def test_unreadable_step_is_not_counted_as_wrong():
+    p = evaluate_problem("Integral(-x**2 + 5*x - 5, (x, -2, -1))", "-89/6")
+    v = verify(p, ["[-x**3/3 + 5*x**2/2 - 5*x] evaluated from x = -2 to x = -1", "47/6 - 68/3", "-89/6"], "-89/6")
+    assert v.first_error_type == "parse_error"
+    assert [s.status for s in v.steps] == ["parse_error", "ok", "ok"]
+    assert not v.lucky_guess
+
+
+def test_real_error_outranks_unreadable_step():
+    p = evaluate_problem("2 + 3*4", "14")
+    v = verify(p, ["two plus twelve", "2 + 13", "15"], "15")
+    assert v.first_error_type == "arithmetic_slip" and v.first_error_step == 1
+
+
 def test_solve_constant_error_is_arithmetic():
     p = solve_problem("3*x + 4 = 19", "5")
     v = verify(p, ["3*x = 16", "x = 16/3"], "16/3")

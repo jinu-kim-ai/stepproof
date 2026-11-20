@@ -81,7 +81,7 @@
 
 | Step | Content | Verdict |
 |---|---|---|
-| 1 | `x**2 = 19` | **arithmetic_slip** - solutions changed from {-4, 4} to {sqrt(19), -sqrt(19)} |
+| 1 | `x**2 = 19` | **arithmetic_slip** - solutions changed from {-4, 4} to {-sqrt(19), sqrt(19)} |
 | final answer | `-sqrt(19), sqrt(19)` | unreadable |
 
 > Reasoning first breaks at step 1: **arithmetic_slip**.
@@ -94,7 +94,7 @@
 
 | Step | Content | Verdict |
 |---|---|---|
-| 1 | `x**2 - 8*x = -18` | **arithmetic_slip** - solutions changed from {3, 5} to {4 - sqrt(2)*I, 4 + sqrt(2)*I} |
+| 1 | `x**2 - 8*x = -18` | **arithmetic_slip** - solutions changed from {3, 5} to {4 + sqrt(2)*I, 4 - sqrt(2)*I} |
 
 > Reasoning first breaks at step 1: **arithmetic_slip**.
 
@@ -107,7 +107,7 @@
 | Step | Content | Verdict |
 |---|---|---|
 | 1 | `x**2 - x = 20` | ok |
-| 2 | `x - 5 = 0` | **invalid_algebra** - solutions changed from {-4, 5} to {5} |
+| 2 | `x - 5 = 0` | **invalid_algebra** - solutions changed from {-4, 5} to {5} (lost a root) |
 | 3 | `x = 5` | carries earlier error |
 
 > Reasoning first breaks at step 2: **invalid_algebra**.
@@ -122,7 +122,7 @@
 |---|---|---|
 | 1 | `(43/6)*5` | ok |
 | 2 | `215/6` | ok |
-| 3 | `36` | **arithmetic_slip** - '215/6' != '36' (215/6 vs 36) |
+| 3 | `36` | **arithmetic_slip** - '36' does not follow from '215/6': got 36, expected 215/6 |
 
 > Reasoning first breaks at step 3: **arithmetic_slip**.
 
@@ -148,7 +148,7 @@
 | Step | Content | Verdict |
 |---|---|---|
 | 1 | `(x**2 - 2*x + 1) - (x**2 + 4*x + 4)` | ok |
-| 2 | `3 - 6*x` | **invalid_algebra** - '(x**2 - 2*x + 1) - (x**2 + 4*x + 4)' != '3 - 6*x' (-6*x - 3 vs 3 - 6*x) |
+| 2 | `3 - 6*x` | **invalid_algebra** - '3 - 6*x' does not follow from '(x**2 - 2*x + 1) - (x**2 + 4*x + 4)': got 3 - 6*x, expected -6*x - 3 |
 | final answer | `-6*x - 3` | **unjustified_leap** - final answer '-6*x - 3' does not follow from last step '3 - 6*x' |
 
 > Reasoning first breaks at step 2: **invalid_algebra**.
@@ -215,7 +215,7 @@
 | Step | Content | Verdict |
 |---|---|---|
 | 1 | `Derivative(x**4, x)*exp(x) + x**4*Derivative(exp(x), x)` | ok |
-| 2 | `4*x**3*exp(x)` | **misapplied_rule** - 'Derivative(x**4, x)*exp(x) + x**4*Derivative(exp(x), x)' != '4*x**3*exp(x)' (x**3*(x + 4)*exp(x) vs 4*x**3*exp(x)) |
+| 2 | `4*x**3*exp(x)` | **misapplied_rule** - '4*x**3*exp(x)' does not follow from 'Derivative(x**4, x)*exp(x) + x**4*Derivative(exp(x), x)': got 4*x**3*exp(x), expected x**3*(x + 4)*exp(x) |
 
 > Reasoning first breaks at step 2: **misapplied_rule**.
 
@@ -228,7 +228,7 @@
 | Step | Content | Verdict |
 |---|---|---|
 | 1 | `Derivative(x**3, x)*exp(x) + x**3*Derivative(exp(x), x)` | ok |
-| 2 | `3*x**2*exp(x)` | **misapplied_rule** - 'Derivative(x**3, x)*exp(x) + x**3*Derivative(exp(x), x)' != '3*x**2*exp(x)' (x**2*(x + 3)*exp(x) vs 3*x**2*exp(x)) |
+| 2 | `3*x**2*exp(x)` | **misapplied_rule** - '3*x**2*exp(x)' does not follow from 'Derivative(x**3, x)*exp(x) + x**3*Derivative(exp(x), x)': got 3*x**2*exp(x), expected x**2*(x + 3)*exp(x) |
 
 > Reasoning first breaks at step 2: **misapplied_rule**.
 
@@ -240,7 +240,7 @@
 
 | Step | Content | Verdict |
 |---|---|---|
-| 1 | `Derivative(x**5, x)*log(x) - x**5*Derivative(log(x), x)` | **invalid_algebra** - 'Derivative(x**5*log(x), x)' != 'Derivative(x**5, x)*log(x) - x**5*Derivative(log(x), x)' (x**4*(5*log(x) + 1) vs x**4*(5*log(x) - 1)) |
+| 1 | `Derivative(x**5, x)*log(x) - x**5*Derivative(log(x), x)` | **invalid_algebra** - 'Derivative(x**5, x)*log(x) - x**5*Derivative(log(x), x)' does not follow from 'Derivative(x**5*log(x), x)': got x**4*(5*log(x) - 1), expected x**5*log(x), or x**4*(5*log(x) + 1) after differentiating |
 | 2 | `5*x**4*log(x) - x**4` | carries earlier error |
 | final answer | `5*x**4*log(x) + x**4` | **unjustified_leap** - final answer '5*x**4*log(x) + x**4' does not follow from last step '5*x**4*log(x) - x**4' |
 
@@ -256,7 +256,7 @@
 | Step | Content | Verdict |
 |---|---|---|
 | 1 | `12*(1)**2 + 12*(1) + -5` | ok |
-| 2 | `18` | **arithmetic_slip** - '12*(1)**2 + 12*(1) + -5' != '18' (19 vs 18) |
+| 2 | `18` | **arithmetic_slip** - '18' does not follow from '12*(1)**2 + 12*(1) + -5': got 18, expected 19 |
 | final answer | `19` | **unjustified_leap** - final answer '19' does not follow from last step '18' |
 
 > Reasoning first breaks at step 2: **arithmetic_slip**.
@@ -271,7 +271,7 @@
 | Step | Content | Verdict |
 |---|---|---|
 | 1 | `-3*(1)**2 + -4*(1) + -1` | ok |
-| 2 | `-7` | **arithmetic_slip** - '-3*(1)**2 + -4*(1) + -1' != '-7' (-8 vs -7) |
+| 2 | `-7` | **arithmetic_slip** - '-7' does not follow from '-3*(1)**2 + -4*(1) + -1': got -7, expected -8 |
 
 > Reasoning first breaks at step 2: **arithmetic_slip**.
 
@@ -283,7 +283,7 @@
 
 | Step | Content | Verdict |
 |---|---|---|
-| 1 | `-9*(-2)**3 + 8*(-2)**2 + -4*(-2)` | **misapplied_rule** - 'Subs(Derivative(-3*x**3 + 4*x**2 - 4*x, x), x, -2)' != '-9*(-2)**3 + 8*(-2)**2 + -4*(-2)' (-56 vs 112) |
+| 1 | `-9*(-2)**3 + 8*(-2)**2 + -4*(-2)` | **misapplied_rule** - '-9*(-2)**3 + 8*(-2)**2 + -4*(-2)' does not follow from 'Subs(Derivative(-3*x**3 + 4*x**2 - 4*x, x), x, -2)': got 112, expected x*(-3*x**2 + 4*x - 4), or -9*x**2 + 8*x - 4 after differentiating |
 | 2 | `112` | carries earlier error |
 
 > Reasoning first breaks at step 1: **misapplied_rule**.
@@ -296,7 +296,7 @@
 
 | Step | Content | Verdict |
 |---|---|---|
-| 1 | `15*(-1)**3 + 10*(-1)**2 + 0*(-1)` | **misapplied_rule** - 'Subs(Derivative(5*x**3 + 5*x**2, x), x, -1)' != '15*(-1)**3 + 10*(-1)**2 + 0*(-1)' (5 vs -5) |
+| 1 | `15*(-1)**3 + 10*(-1)**2 + 0*(-1)` | **misapplied_rule** - '15*(-1)**3 + 10*(-1)**2 + 0*(-1)' does not follow from 'Subs(Derivative(5*x**3 + 5*x**2, x), x, -1)': got -5, expected 5*x**2*(x + 1), or 5*x*(3*x + 2) after differentiating |
 | 2 | `-5` | carries earlier error |
 
 > Reasoning first breaks at step 1: **misapplied_rule**.
@@ -311,7 +311,7 @@
 |---|---|---|
 | 1 | `-12*(3)**2 + -4*(3) + -2` | ok |
 | 2 | `-108 + -12 + -2` | ok |
-| 3 | `-124` | **arithmetic_slip** - '-108 + -12 + -2' != '-124' (-122 vs -124) |
+| 3 | `-124` | **arithmetic_slip** - '-124' does not follow from '-108 + -12 + -2': got -124, expected -122 |
 
 > Reasoning first breaks at step 3: **arithmetic_slip**.
 
@@ -325,7 +325,7 @@
 |---|---|---|
 | 1 | `(-4*(0)**3/3 + 0*(0)**2/2 + -6*(0)) - (-4*(-1)**3/3 + 0*(-1)**2/2 + -6*(-1))` | ok |
 | 2 | `(0) - (22/3)` | ok |
-| 3 | `-7` | **arithmetic_slip** - '(0) - (22/3)' != '-7' (-22/3 vs -7) |
+| 3 | `-7` | **arithmetic_slip** - '-7' does not follow from '(0) - (22/3)': got -7, expected -22/3 |
 
 > Reasoning first breaks at step 3: **arithmetic_slip**.
 
@@ -339,6 +339,6 @@
 |---|---|---|
 | 1 | `(-1*(2)**3/3 + 6*(2)**2/2 + -2*(2)) - (-1*(1)**3/3 + 6*(1)**2/2 + -2*(1))` | ok |
 | 2 | `(16/3) - (2/3)` | ok |
-| 3 | `5` | **arithmetic_slip** - '(16/3) - (2/3)' != '5' (14/3 vs 5) |
+| 3 | `5` | **arithmetic_slip** - '5' does not follow from '(16/3) - (2/3)': got 5, expected 14/3 |
 
 > Reasoning first breaks at step 3: **arithmetic_slip**.

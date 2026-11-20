@@ -1,0 +1,12 @@
+{
+  "claude-haiku-5-5": {
+    "requests": 130,
+    "input_tokens": 67721,
+    "output_tokens": 26032
+  },
+  "claude-opus-5-5": {
+    "requests": 130,
+    "input_tokens": 67721,
+    "output_tokens": 12538
+  }
+}

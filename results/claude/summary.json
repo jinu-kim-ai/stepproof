@@ -1,0 +1,115 @@
+{
+  "models": {
+    "claude-haiku-5-5": {
+      "n": 130,
+      "answer_acc": 0.9923076923076923,
+      "answer_ci": [
+        0.9769230769230769,
+        1.0
+      ],
+      "process_acc": 0.9923076923076923,
+      "process_ci": [
+        0.9769230769230769,
+        1.0
+      ],
+      "flawed_rate": 0.007692307692307693,
+      "unreadable_rate": 0.0,
+      "lucky_guess_rate": 0.0,
+      "by_domain": {
+        "algebra": {
+          "n": 50,
+          "answer_acc": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "calculus": {
+          "n": 40,
+          "answer_acc": 0.975,
+          "ci": [
+            0.925,
+            1.0
+          ]
+        },
+        "probability": {
+          "n": 40,
+          "answer_acc": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        }
+      },
+      "error_types": {
+        "arithmetic_slip": 1,
+        "invalid_algebra": 0,
+        "misapplied_rule": 0,
+        "unjustified_leap": 0,
+        "parse_error": 0
+      }
+    },
+    "claude-opus-5-5": {
+      "n": 130,
+      "answer_acc": 1.0,
+      "answer_ci": [
+        1.0,
+        1.0
+      ],
+      "process_acc": 0.9923076923076923,
+      "process_ci": [
+        0.9769230769230769,
+        1.0
+      ],
+      "flawed_rate": 0.0,
+      "unreadable_rate": 0.007692307692307693,
+      "lucky_guess_rate": 0.0,
+      "by_domain": {
+        "algebra": {
+          "n": 50,
+          "answer_acc": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "calculus": {
+          "n": 40,
+          "answer_acc": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        },
+        "probability": {
+          "n": 40,
+          "answer_acc": 1.0,
+          "ci": [
+            1.0,
+            1.0
+          ]
+        }
+      },
+      "error_types": {
+        "arithmetic_slip": 0,
+        "invalid_algebra": 0,
+        "misapplied_rule": 0,
+        "unjustified_leap": 0,
+        "parse_error": 1
+      }
+    }
+  },
+  "comparisons": [
+    {
+      "a": "claude-haiku-5-5",
+      "b": "claude-opus-5-5",
+      "metric": "answer_acc",
+      "n": 130,
+      "diff": -0.007692307692307693,
+      "ci_low": -0.023076923076923078,
+      "ci_high": 0.0,
+      "p_value": 0.7228,
+      "significant": false
+    }
+  ]
+}

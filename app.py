@@ -41,12 +41,14 @@ summary = summarize(rows)
 # ---------------------------------------------------------------- headline table
 st.subheader("Accuracy with 95% bootstrap confidence intervals")
 st.caption("**Answer accuracy**: final answer is correct. **Process accuracy**: every step verifies. "
+           "**Flawed**: a step is wrong. **Unreadable**: a step could not be parsed (not counted as wrong). "
            "**Lucky guess**: right answer, invalid reasoning.")
 head = pd.DataFrame([
     {"model": m, "problems": s["n"],
      "answer acc": f"{s['answer_acc']:.1%}  [{s['answer_ci'][0]:.1%}, {s['answer_ci'][1]:.1%}]",
      "process acc": f"{s['process_acc']:.1%}  [{s['process_ci'][0]:.1%}, {s['process_ci'][1]:.1%}]",
-     "gap": f"{s['answer_acc'] - s['process_acc']:+.1%}",
+     "flawed": f"{s['flawed_rate']:.1%}",
+     "unreadable": f"{s['unreadable_rate']:.1%}",
      "lucky guess": f"{s['lucky_guess_rate']:.1%}"}
     for m, s in summary["models"].items()
 ])

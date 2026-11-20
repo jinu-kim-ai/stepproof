@@ -1,6 +1,6 @@
 # Error report: sim-hasty
 
-118 attempts with at least one invalid step (showing up to 25).
+116 attempts with at least one invalid step (showing up to 25).
 
 ### alg-lin1-001 (linear equation) - sim-hasty
 
@@ -253,7 +253,7 @@
 | Step | Content | Verdict |
 |---|---|---|
 | 1 | `x**2 + 6*x = 7` | ok |
-| 2 | `x - 1 = 0` | **invalid_algebra** - solutions changed from {-7, 1} to {1} |
+| 2 | `x - 1 = 0` | **invalid_algebra** - solutions changed from {-7, 1} to {1} (lost a root) |
 | 3 | `x = 1` | carries earlier error |
 
 > Reasoning first breaks at step 2: **invalid_algebra**.
@@ -322,18 +322,16 @@
 
 > Reasoning first breaks at the final answer: **unjustified_leap**.
 
-### alg-quad-018 (quadratic equation) - sim-hasty
+### alg-quad-019 (quadratic equation) - sim-hasty
 
-**Problem:** Solve for x (give all real solutions): x**2 - 2*x - 35 = 0
+**Problem:** Solve for x (give all real solutions): x**2 - x - 12 = 0
 
-**Expected:** `7, -5`  |  **Model answer:** `7, -5`  |  **Answer correct:** yes
+**Expected:** `4, -3`  |  **Model answer:** `4, -3`  |  **Answer correct:** yes
 
 | Step | Content | Verdict |
 |---|---|---|
-| 1 | `x**2 - 2*x = 35` | ok |
-| 2 | `x - 7 = 0` | **invalid_algebra** - solutions changed from {-5, 7} to {7} |
-| 3 | `x = 7` | carries earlier error |
-| final answer | `7, -5` | **unjustified_leap** - final answer '7, -5' does not follow from last step 'x = 7' |
+| 1 | `x**2 - x = 13` | **arithmetic_slip** - solutions changed from {4, -3} to {1/2 + sqrt(53)/2, 1/2 - sqrt(53)/2} |
+| final answer | `4, -3` | **unjustified_leap** - final answer '4, -3' does not follow from last step 'x**2 - x = 13' |
 
-> Reasoning first breaks at step 2: **invalid_algebra**.
+> Reasoning first breaks at step 1: **arithmetic_slip**.
 > Final answer is correct, but the written reasoning does not support it (lucky guess).

@@ -12,6 +12,8 @@
         0.8807692307692307,
         0.9288461538461539
       ],
+      "flawed_rate": 0.09423076923076923,
+      "unreadable_rate": 0.0,
       "lucky_guess_rate": 0.01730769230769231,
       "by_domain": {
         "algebra": {
@@ -54,12 +56,14 @@
         0.7673076923076924,
         0.8346153846153846
       ],
-      "process_acc": 0.7730769230769231,
+      "process_acc": 0.7769230769230769,
       "process_ci": [
-        0.7384134615384615,
-        0.8096153846153846
+        0.7422596153846154,
+        0.8134615384615385
       ],
-      "lucky_guess_rate": 0.026923076923076925,
+      "flawed_rate": 0.2230769230769231,
+      "unreadable_rate": 0.0,
+      "lucky_guess_rate": 0.023076923076923078,
       "by_domain": {
         "algebra": {
           "n": 200,
@@ -88,7 +92,7 @@
       },
       "error_types": {
         "arithmetic_slip": 55,
-        "invalid_algebra": 9,
+        "invalid_algebra": 7,
         "misapplied_rule": 9,
         "unjustified_leap": 45,
         "parse_error": 0
@@ -101,12 +105,14 @@
         0.8634615384615385,
         0.9173076923076923
       ],
-      "process_acc": 0.801923076923077,
+      "process_acc": 0.8038461538461539,
       "process_ci": [
-        0.7673076923076924,
+        0.7692307692307693,
         0.8365384615384616
       ],
-      "lucky_guess_rate": 0.08846153846153847,
+      "flawed_rate": 0.19615384615384615,
+      "unreadable_rate": 0.0,
+      "lucky_guess_rate": 0.08653846153846154,
       "by_domain": {
         "algebra": {
           "n": 200,
@@ -135,7 +141,7 @@
       },
       "error_types": {
         "arithmetic_slip": 28,
-        "invalid_algebra": 8,
+        "invalid_algebra": 7,
         "misapplied_rule": 51,
         "unjustified_leap": 16,
         "parse_error": 0

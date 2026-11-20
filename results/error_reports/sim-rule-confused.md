@@ -1,6 +1,6 @@
 # Error report: sim-rule-confused
 
-103 attempts with at least one invalid step (showing up to 25).
+102 attempts with at least one invalid step (showing up to 25).
 
 ### alg-lin1-002 (linear equation) - sim-rule-confused
 
@@ -155,22 +155,6 @@
 
 > Reasoning first breaks at step 2: **invalid_algebra**.
 
-### alg-quad-008 (quadratic equation) - sim-rule-confused
-
-**Problem:** Solve for x (give all real solutions): x**2 + 6*x - 7 = 0
-
-**Expected:** `1, -7`  |  **Model answer:** `1, -7`  |  **Answer correct:** yes
-
-| Step | Content | Verdict |
-|---|---|---|
-| 1 | `x**2 + 6*x = 7` | ok |
-| 2 | `x - 1 = 0` | **invalid_algebra** - solutions changed from {-7, 1} to {1} |
-| 3 | `x = 1` | carries earlier error |
-| final answer | `1, -7` | **unjustified_leap** - final answer '1, -7' does not follow from last step 'x = 1' |
-
-> Reasoning first breaks at step 2: **invalid_algebra**.
-> Final answer is correct, but the written reasoning does not support it (lucky guess).
-
 ### alg-quad-011 (quadratic equation) - sim-rule-confused
 
 **Problem:** Solve for x (give all real solutions): x**2 + 9*x + 20 = 0
@@ -245,7 +229,7 @@
 | Step | Content | Verdict |
 |---|---|---|
 | 1 | `(76/16)*6` | ok |
-| 2 | `29` | **arithmetic_slip** - '(76/16)*6' != '29' (57/2 vs 29) |
+| 2 | `29` | **arithmetic_slip** - '29' does not follow from '(76/16)*6': got 29, expected 57/2 |
 
 > Reasoning first breaks at step 2: **arithmetic_slip**.
 
@@ -309,7 +293,7 @@
 
 | Step | Content | Verdict |
 |---|---|---|
-| 1 | `Derivative(x**6, x)*cos(x) - x**6*Derivative(cos(x), x)` | **invalid_algebra** - 'Derivative(x**6*cos(x), x)' != 'Derivative(x**6, x)*cos(x) - x**6*Derivative(cos(x), x)' (x**5*(-x*sin(x) + 6*cos(x)) vs x**5*(x*sin(x) + 6*cos(x))) |
+| 1 | `Derivative(x**6, x)*cos(x) - x**6*Derivative(cos(x), x)` | **invalid_algebra** - 'Derivative(x**6, x)*cos(x) - x**6*Derivative(cos(x), x)' does not follow from 'Derivative(x**6*cos(x), x)': got x**5*(x*sin(x) + 6*cos(x)), expected x**6*cos(x), or x**5*(-x*sin(x) + 6*cos(x)) after differentiating |
 | 2 | `x**6*sin(x) + 6*x**5*cos(x)` | carries earlier error |
 
 > Reasoning first breaks at step 1: **invalid_algebra**.
@@ -323,7 +307,7 @@
 | Step | Content | Verdict |
 |---|---|---|
 | 1 | `Derivative(x**2, x)*log(x) + x**2*Derivative(log(x), x)` | ok |
-| 2 | `2*x*1/x` | **misapplied_rule** - 'Derivative(x**2, x)*log(x) + x**2*Derivative(log(x), x)' != '2*x*1/x' (x*(2*log(x) + 1) vs 2) |
+| 2 | `2*x*1/x` | **misapplied_rule** - '2*x*1/x' does not follow from 'Derivative(x**2, x)*log(x) + x**2*Derivative(log(x), x)': got 2, expected x*(2*log(x) + 1) |
 | 3 | `2` | carries earlier error |
 | final answer | `2*x*log(x) + x` | **unjustified_leap** - final answer '2*x*log(x) + x' does not follow from last step '2' |
 
@@ -339,6 +323,20 @@
 | Step | Content | Verdict |
 |---|---|---|
 | 1 | `Derivative(x**3, x)*exp(x) + x**3*Derivative(exp(x), x)` | ok |
-| 2 | `3*x**2*exp(x)` | **misapplied_rule** - 'Derivative(x**3, x)*exp(x) + x**3*Derivative(exp(x), x)' != '3*x**2*exp(x)' (x**2*(x + 3)*exp(x) vs 3*x**2*exp(x)) |
+| 2 | `3*x**2*exp(x)` | **misapplied_rule** - '3*x**2*exp(x)' does not follow from 'Derivative(x**3, x)*exp(x) + x**3*Derivative(exp(x), x)': got 3*x**2*exp(x), expected x**2*(x + 3)*exp(x) |
+
+> Reasoning first breaks at step 2: **misapplied_rule**.
+
+### calc-prod-009 (product rule) - sim-rule-confused
+
+**Problem:** Differentiate with respect to x: f(x) = x**4*cos(x)
+
+**Expected:** `-x**4*sin(x) + 4*x**3*cos(x)`  |  **Model answer:** `-4*x**3*sin(x)`  |  **Answer correct:** no
+
+| Step | Content | Verdict |
+|---|---|---|
+| 1 | `Derivative(x**4, x)*cos(x) + x**4*Derivative(cos(x), x)` | ok |
+| 2 | `4*x**3*-sin(x)` | **misapplied_rule** - '4*x**3*-sin(x)' does not follow from 'Derivative(x**4, x)*cos(x) + x**4*Derivative(cos(x), x)': got -4*x**3*sin(x), expected x**3*(-x*sin(x) + 4*cos(x)) |
+| 3 | `-4*x**3*sin(x)` | carries earlier error |
 
 > Reasoning first breaks at step 2: **misapplied_rule**.

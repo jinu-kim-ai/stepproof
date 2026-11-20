@@ -5,6 +5,7 @@
   python -m stepproof run --models claude-opus-5-5 claude-haiku-5-5 --limit 100 --workers 8
   python -m stepproof report                         # summary + per-model error reports
   python -m stepproof check-verifier                 # does the verifier find injected errors?
+  python -m stepproof reverify --results results/claude   # re-check saved answers, no API calls
 """
 from __future__ import annotations
 
@@ -15,7 +16,7 @@ from pathlib import Path
 from .models import PROFILES, SimulatedModel
 from .problems import generate, load, save
 from .report import format_summary, summarize, write_reports
-from .runner import load_results, run
+from .runner import load_results, reverify, run
 from .verifier import verify
 
 
@@ -41,7 +42,17 @@ def main(argv=None) -> int:
     c = sub.add_parser("check-verifier")
     c.add_argument("--problems", default="data/problems.jsonl")
 
+    rv = sub.add_parser("reverify", help="re-check saved model answers with the current verifier (no API calls)")
+    rv.add_argument("--results", default="results")
+    rv.add_argument("--problems", default="data/problems.jsonl")
+
     args = ap.parse_args(argv)
+
+    if args.cmd == "reverify":
+        rows = reverify(Path(args.results) / "results.jsonl", _load_or_generate(args.problems))
+        write_reports(rows, args.results)
+        print(format_summary(summarize(rows)))
+        return 0
 
     if args.cmd == "generate":
         problems = generate(args.per_template, args.seed)
